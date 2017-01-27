@@ -37,5 +37,24 @@ Ext.define('ClientPortal.store.MemberDtlStore',{
                 anniv: anniv
             }
         });
+    },
+    doPrincipalsByCorpAndAnniv: function(corp_id,anniv){
+        this.getProxy().setUrl('/memberdtl/findPrincipalsByCorpAndAnniv');
+        this.load({
+            params: {
+                corp_id: corp_id,
+                anniv: anniv
+            }
+        });
+    },
+    doFindDependants: function(corp_id,anniv,familyNo){
+        this.getProxy().setUrl('/memberdtl/findDependants');
+        this.load({
+            params: {
+                corp_id: corp_id,
+                anniv: anniv,
+                familyNo: familyNo
+            }
+        });
     }
 });

@@ -12,6 +12,8 @@ Ext.define('ClientPortal.view.main.MainController', {
             benefitStore = vm.getStore('policyBenefits'),
             policyBenefitList;
 
+        vm.set('current.policyPeriod', record);
+
         benefitStore.doFindByCorpAndAnniv(corp_id,record.get('anniv'));
         policyBenefitList = vw.down('policy-benefit-list');
         if(!policyBenefitList){
@@ -57,8 +59,8 @@ Ext.define('ClientPortal.view.main.MainController', {
             rec = grid.getStore().getAt(rowIndex),
             memberList = vw.down('member-list');
 
-        memberStore.doFindByCorpAndAnniv(rec.get('corp_id'),rec.get('anniv'));
-
+        memberStore.doPrincipalsByCorpAndAnniv(rec.get('corp_id'),rec.get('anniv'));
+        vm.set('current.policyPeriod',rec);
         if(!memberList){
             memberList = Ext.create('ClientPortal.view.main.MemberList',{
                 title: 'Members',
@@ -69,6 +71,37 @@ Ext.define('ClientPortal.view.main.MainController', {
 
         vw.getLayout().setActiveItem(memberList);
 
+    },
+
+    onPrincipleDblClick: function ( view , record , item , index , e , eOpts ) {
+        var me = this,
+            vm = me.getViewModel(),
+            vw = me.getView(),
+            memberStore = vm.getStore('memberDtls'),
+            familyNo = record.get('family_no'),
+            corpId = record.get('corp_id'),
+            anniv = vm.get('current.policyPeriod.anniv'),
+            win;
+
+        memberStore.doFindDependants(corpId,anniv,familyNo);
+
+        //Ext.Msg.alert('Details Count',memberStore.getTotalCount());
+
+        win = Ext.create({
+            xtype: 'window',
+            requires: ['ClientPortal.view.main.FamilyPanel'],
+            //autoShow: true,
+            iconCls: 'x-fa fa-user',
+            width: '250',
+            height: '450',
+            items: [
+                { xtype: 'family-panel'}
+            ]
+
+        });
+
+        vw.add([win]);
+        win.show();
     },
 
     onPolicySelected: function (sender, record) {

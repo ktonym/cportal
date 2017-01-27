@@ -50,7 +50,7 @@ public class MemberDtlHandler {
         return memberDtls;
     }
 
-    @GetMapping(value = ("/findPrincipalsCorpAndAnniv"), produces = "application/json")
+    @GetMapping(value = ("/findPrincipalsByCorpAndAnniv"), produces = "application/json")
     @ResponseBody
     public List<MemberDtl> findPrincipalsByCorpAndAnniv(@RequestParam(value = "corp_id") String corpIdStr,
                                                         @RequestParam(value = "anniv") String annivStr){

@@ -9,6 +9,9 @@ Ext.define('ClientPortal.view.main.MemberList',{
         store: '{memberDtls}',
         selection: '{current.member}'
     },
+    listeners: {
+        itemdblclick: 'onPrincipleDblClick'
+    },
     columns: [
         {
             dataIndex: 'member_no',
